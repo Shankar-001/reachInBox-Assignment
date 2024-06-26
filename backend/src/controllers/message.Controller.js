@@ -205,4 +205,7 @@ const sendMail = async (data, token) => {
 
 module.exports = {
   sendMail,
+  createLabelIfNotExist,
+  classifyEmailWithGemini,
+  
 };

@@ -20,7 +20,6 @@ The assignment involves developing a server-based application using Node.js and 
 - google-auth-library
 - ioredis
 - @microsoft/microsoft-graph-client
-- @azure/msal-node
 
 ## Installation setup
 

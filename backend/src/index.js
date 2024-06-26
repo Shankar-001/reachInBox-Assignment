@@ -9,7 +9,7 @@ require('dotenv').config();
 
 const router = require('./routes/message.Routes');
 const googleAuthRouter = require('./routes/googleAuth.Routes');
-// const outlookRouter = require('./routes/outlookAuth.Routes');
+const outlookRouter = require('./routes/outlookAuth.Routes');
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -27,7 +27,7 @@ app.use(
 // MessageRoutes
 app.use('/', googleAuthRouter);
 app.use('/api/mail', router);
-// app.use("/outlook", outlookRouter);
+app.use("/outlook", outlookRouter);
 
 app.get('/', async (req, res) => {
   res.redirect('https://documenter.getpostman.com/view/31971527/2sA35D43FE');

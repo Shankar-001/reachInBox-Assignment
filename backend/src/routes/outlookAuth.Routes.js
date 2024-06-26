@@ -1,6 +1,5 @@
 const express = require('express');
 const { ConfidentialClientApplication } = require('@azure/msal-node');
-const redis = require('redis');
 const { Client } = require('@microsoft/microsoft-graph-client');
 const { redisSetToken } = require('../middlewares/redis.middleware');
 const router = express.Router();
@@ -42,30 +41,17 @@ router.get('/auth/microsoft/callback', async (req, res) => {
     scopes: scopes,
     redirectUri: redirectUri,
   };
+  // console.log('tokenRequest', tokenRequest.code);
 
   try {
     const response = await cca.acquireTokenByCode(tokenRequest);
     const { accessToken, refreshToken, account } = response;
 
-    const client = Client.init({
-      authProvider: (done) => {
-        done(null, accessToken);
-      },
-    });
-
-    const user = await client.api('/me').get();
-    const email = user.mail;
+    const email = account.username;
+    console.log('outlook sign in with account : ', email);
 
     // Store tokens in Redis (or any other storage mechanism)
-    await redisSetToken(email, { accessToken, refreshToken });
-
-
-
-
-
-
-
-
+    await redisSetToken(email, { accessToken, refreshToken , scope : scopes.join(' ') });
     
     res.json({
       email,

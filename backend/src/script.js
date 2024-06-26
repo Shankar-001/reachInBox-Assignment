@@ -10,9 +10,7 @@ const port = 5500;
 app.use(cors());
 
 const oauth2Client = new google.auth.OAuth2(
-  '1077493758156-prp35tf2bob0s8o0vi5o7rbc1cn84n1g.apps.googleusercontent.com',
-  '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',
-  'http://127.0.0.1:5500/callback'
+  
 );
 
 const scopes = [

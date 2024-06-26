@@ -75,11 +75,52 @@ router.get('/auth/google/callback', async (req, res) => {
 
     // console.log("Watch response:", watchResponse.data);
     // Send the tokens and email to the client
-    res.json({
-      email,
-      tokens,
-      // watchResponse: watchResponse.data,
-    });
+    res.send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Subscription Confirmation</title>
+          <style>
+              body {
+                  font-family: 'Helvetica Neue', Arial, sans-serif;
+                  background-color: #f4f4f4;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100vh;
+                  margin: 0;
+              }
+              .container {
+                  background: #fff;
+                  padding: 30px;
+                  border-radius: 10px;
+                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                  text-align: center;
+              }
+              .message {
+                  font-size: 24px;
+                  font-weight: bold;
+                  color: #333;
+                  margin-bottom: 20px;
+              }
+              .note {
+                  font-size: 18px;
+                  color: #555;
+                  margin-bottom: 10px;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <div class="message">Thank You for Subscribing</div>
+              <div class="note">I'm monitoring your inbox to ensure timely responses to your new emails.</div>
+              <div class="note">Feel free to close this window now.</div>
+          </div>
+      </body>
+      </html>
+  `);
   } catch (error) {
     console.error('Error exchanging authorization code:', error.message);
     res.status(500).send('Error exchanging authorization code.');

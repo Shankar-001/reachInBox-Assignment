@@ -71,17 +71,28 @@ const getAllEmailTokenPairsFromRedis = async () => {
     // console.log("Keys in Redis:", keys);
     const emailTokenPairs = [];
 
-    const skipKeys = ["", "bull:outlook-queue:meta", "bull:email-queue:meta"];
+    const gmailTokenPairs = [];
+    const outlookTokenPairs = [];
+
+    // const skipKeys = ["", "bull:outlook-queue:meta", "bull:email-queue:meta",'bull:emailQueue:meta','bull:emailQueue:stalled-check',];
 
     for (const key of keys) {
-      if (!skipKeys.includes(key)) {
+      if (key !==""  && !key.includes('bull:') ) {
         // console.log('key:', key);
         const token = await redisGetFullToken(key);
-        emailTokenPairs.push({ email: key, token });
+
+        if(token.scope.includes('https://www.googleapis.com/auth/gmail.readonly')){
+          emailTokenPairs.push({ email: key, token });
+          gmailTokenPairs.push({ email: key, token });
+
+        }
+        else{
+          outlookTokenPairs.push({ email: key, token });
+        }
       }
     }
     // console.log("All email-token pairs from Redis:", emailTokenPairs);
-    return emailTokenPairs;
+    return {emailTokenPairs,gmailTokenPairs,outlookTokenPairs};
   } catch (error) {
     console.error(
       "Error retrieving all email-token pairs from Redis:",
